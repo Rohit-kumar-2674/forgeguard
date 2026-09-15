@@ -2,8 +2,11 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 from enum import Enum
+from hashlib import sha256
 from pathlib import Path
 from typing import Any
+
+from forgeguard import __version__
 
 
 class Severity(str, Enum):
@@ -27,9 +30,17 @@ class Finding:
     evidence: str | None = None
     documentation_url: str | None = None
 
+    @property
+    def fingerprint(self) -> str:
+        identity = "\0".join(
+            (self.check_id, self.path or "", str(self.line or 0), self.evidence or self.title)
+        )
+        return sha256(identity.encode()).hexdigest()
+
     def to_dict(self) -> dict[str, Any]:
         data = asdict(self)
         data["severity"] = self.severity.value
+        data["fingerprint"] = self.fingerprint
         return data
 
 
@@ -59,7 +70,7 @@ class ScanReport:
     def to_dict(self) -> dict[str, Any]:
         return {
             "schema_version": "1",
-            "tool": {"name": "ForgeGuard", "version": "0.1.0"},
+            "tool": {"name": "ForgeGuard", "version": __version__},
             "root": self.root,
             "score": self.score,
             "summary": {
@@ -70,4 +81,3 @@ class ScanReport:
             "checks_run": self.checks_run,
             "findings": [finding.to_dict() for finding in self.findings],
         }
-

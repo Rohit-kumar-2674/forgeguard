@@ -11,8 +11,8 @@ class Check(ABC):
     check_id: str
     name: str
     category: str
+    config_category: str
 
     @abstractmethod
     def run(self, context: ScanContext) -> list[Finding]:
         raise NotImplementedError
-

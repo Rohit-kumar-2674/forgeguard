@@ -6,4 +6,4 @@ scan:
   dependencies: true
 thresholds:
   fail_on: high
-
+ignore:

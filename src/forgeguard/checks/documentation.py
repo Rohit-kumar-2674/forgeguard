@@ -10,6 +10,7 @@ class CommunityFilesCheck(Check):
     check_id = "FG-DOC-001"
     name = "Community files"
     category = "documentation"
+    config_category = "documentation"
 
     REQUIRED: ClassVar[dict[str, tuple[Severity, str]]] = {
         "README.md": (Severity.MEDIUM, "Add a README explaining purpose, installation, and use."),

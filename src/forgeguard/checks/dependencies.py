@@ -10,6 +10,7 @@ class LockfileCheck(Check):
     check_id = "FG-DEP-001"
     name = "Dependency lockfiles"
     category = "dependencies"
+    config_category = "dependencies"
 
     PAIRS: ClassVar[dict[str, tuple[str, ...]]] = {
         "package.json": ("package-lock.json", "pnpm-lock.yaml", "yarn.lock", "bun.lockb"),

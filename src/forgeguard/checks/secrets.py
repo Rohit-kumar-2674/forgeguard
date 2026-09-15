@@ -26,6 +26,7 @@ class SecretPatternsCheck(Check):
     check_id = "FG-SEC-001"
     name = "Secret patterns"
     category = "secrets"
+    config_category = "secrets"
 
     def run(self, context: ScanContext) -> list[Finding]:
         findings = []
@@ -55,4 +56,3 @@ class SecretPatternsCheck(Check):
                         )
                     )
         return findings
-

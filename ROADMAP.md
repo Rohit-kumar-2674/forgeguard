@@ -6,7 +6,7 @@
 
 ## 0.2 — Interoperability
 
-- SARIF output, configuration schema, exclusions, fingerprints, and documented JSON compatibility.
+- Completed: SARIF output, validated configuration, exclusions, fingerprints, and documented JSON compatibility.
 
 ## 0.3 — Dependency intelligence
 
@@ -25,4 +25,3 @@
 - Plugin API, historical dashboard, hosted API, additional ecosystems, signed releases, and package registries.
 
 Adoption, contributor count, downloads, and OpenSSF criticality are outcomes—not metrics ForgeGuard will manipulate.
-

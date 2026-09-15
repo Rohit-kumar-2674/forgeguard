@@ -13,8 +13,10 @@ ForgeGuard is a local-first, open-source repository security and health scanner.
 - Flags `permissions: write-all` and third-party GitHub Actions not pinned to a commit SHA.
 - Detects a conservative set of credential patterns and always redacts matching values.
 - Reports missing npm and Python lockfiles.
-- Produces human-readable and stable JSON reports.
+- Produces human-readable, stable JSON, and SARIF 2.1 reports.
 - Supports configurable CI failure thresholds.
+- Supports category toggles and ignored check IDs through `forgeguard.yml`.
+- Emits deterministic finding fingerprints for result tracking.
 - Uses only the Python standard library at runtime.
 
 ## Quick start
@@ -25,6 +27,7 @@ Python 3.10 or newer is required.
 python -m pip install -e .
 forgeguard scan /path/to/repository
 forgeguard scan . --format json
+forgeguard scan . --format sarif > forgeguard.sarif
 forgeguard scan . --fail-on high
 ```
 
@@ -46,7 +49,27 @@ ruff check .
 
 See [the architecture](ARCHITECTURE.md), [roadmap](ROADMAP.md), and [contribution guide](CONTRIBUTING.md).
 
+## Configuration
+
+ForgeGuard automatically reads `forgeguard.yml` from the scanned repository. Its deliberately
+small YAML subset supports booleans, strings, integers, nested mappings, and the `ignore` list:
+
+```yaml
+version: 1
+scan:
+  documentation: true
+  actions: true
+  secrets: true
+  dependencies: true
+thresholds:
+  fail_on: high
+ignore:
+  - FG-DOC-001
+```
+
+Use `--config path/to/file.yml` to select another file, or repeat `--ignore FG-ID` for temporary
+command-line exclusions. Unknown keys and invalid values fail closed with a clear error.
+
 ## License
 
 MIT © Rocky
-

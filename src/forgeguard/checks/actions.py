@@ -13,6 +13,7 @@ class GitHubActionsCheck(Check):
     check_id = "FG-ACT-001"
     name = "GitHub Actions hardening"
     category = "github-actions"
+    config_category = "actions"
 
     def run(self, context: ScanContext) -> list[Finding]:
         workflow_dir = context.root / ".github" / "workflows"
@@ -55,4 +56,3 @@ class GitHubActionsCheck(Check):
                         )
                     )
         return findings
-
