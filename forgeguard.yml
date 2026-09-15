@@ -1,0 +1,9 @@
+version: 1
+scan:
+  documentation: true
+  actions: true
+  secrets: true
+  dependencies: true
+thresholds:
+  fail_on: high
+
