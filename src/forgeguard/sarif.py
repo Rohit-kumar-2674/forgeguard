@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+from urllib.parse import quote
+
+from forgeguard import __version__
 from forgeguard.models import ScanReport, Severity
 
 SARIF_LEVELS = {
@@ -33,7 +36,7 @@ def render_sarif(report: ScanReport) -> dict:
             "partialFingerprints": {"forgeguardFingerprint/v1": finding.fingerprint},
         }
         if finding.path:
-            location = {"artifactLocation": {"uri": finding.path}}
+            location = {"artifactLocation": {"uri": quote(finding.path.replace("\\", "/"), safe="/")}}
             if finding.line:
                 location["region"] = {"startLine": finding.line}
             result["locations"] = [{"physicalLocation": location}]
@@ -52,7 +55,7 @@ def render_sarif(report: ScanReport) -> dict:
                     "driver": {
                         "name": "ForgeGuard",
                         "informationUri": "https://github.com/Rohit-kumar-2674/forgeguard",
-                        "semanticVersion": "0.2.0",
+                        "semanticVersion": __version__,
                         "rules": rules,
                     }
                 },
@@ -60,4 +63,3 @@ def render_sarif(report: ScanReport) -> dict:
             }
         ],
     }
-

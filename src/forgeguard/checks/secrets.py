@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 
 from forgeguard.checks.base import Check
+from forgeguard.files import read_text
 from forgeguard.models import Finding, ScanContext, Severity
 
 PATTERNS = {
@@ -10,8 +11,6 @@ PATTERNS = {
     "AWS access key": re.compile(r"\bAKIA[0-9A-Z]{16}\b"),
     "GitHub token": re.compile(r"\bgh[pousr]_[A-Za-z0-9_]{30,255}\b"),
 }
-SKIP_DIRS = {".git", ".venv", "venv", "node_modules", "dist", "build"}
-MAX_FILE_BYTES = 1_000_000
 
 
 def redact(value: str) -> str:
@@ -30,14 +29,9 @@ class SecretPatternsCheck(Check):
 
     def run(self, context: ScanContext) -> list[Finding]:
         findings = []
-        for path in context.root.rglob("*"):
-            if not path.is_file() or any(part in SKIP_DIRS for part in path.parts):
-                continue
-            try:
-                if path.stat().st_size > MAX_FILE_BYTES or b"\0" in path.read_bytes()[:1024]:
-                    continue
-                text = path.read_text(encoding="utf-8", errors="replace")
-            except OSError:
+        for path in context.files:
+            text = read_text(path)
+            if text is None:
                 continue
             for label, pattern in PATTERNS.items():
                 for match in pattern.finditer(text):
@@ -49,7 +43,7 @@ class SecretPatternsCheck(Check):
                             self.category,
                             "A value matching a sensitive credential pattern was found. The value is redacted.",
                             "Revoke the credential, remove it from history, and use a secret manager.",
-                            str(path.relative_to(context.root)),
+                            path.relative_to(context.root).as_posix(),
                             text[: match.start()].count("\n") + 1,
                             redact(match.group(0)),
                             "https://docs.github.com/code-security/secret-scanning/introduction/about-secret-scanning",

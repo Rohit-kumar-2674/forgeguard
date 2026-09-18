@@ -22,6 +22,8 @@ ForgeGuard turns repository security signals into findings people can actually a
 command to inspect documentation, dependency hygiene, GitHub Actions, and potential credentials—
 without executing the target project, uploading its source, or exposing matched secrets.
 
+Read [scan scope and reliable automation](docs/RELIABILITY.md) for file limits, configuration validation, exit codes, and SARIF portability. The CLI also supports `python -m forgeguard`.
+
 ```console
 $ forgeguard scan .
 

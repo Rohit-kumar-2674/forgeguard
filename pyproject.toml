@@ -20,6 +20,11 @@ classifiers = [
 ]
 dependencies = []
 
+[project.urls]
+Repository = "https://github.com/Rohit-kumar-2674/forgeguard"
+Issues = "https://github.com/Rohit-kumar-2674/forgeguard/issues"
+Documentation = "https://github.com/Rohit-kumar-2674/forgeguard#readme"
+
 [project.optional-dependencies]
 dev = ["pytest>=8", "ruff>=0.6"]
 
