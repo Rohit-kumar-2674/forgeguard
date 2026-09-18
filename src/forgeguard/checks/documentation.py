@@ -21,7 +21,7 @@ class CommunityFilesCheck(Check):
 
     def run(self, context: ScanContext) -> list[Finding]:
         findings = []
-        names = {path.name.lower() for path in context.root.iterdir() if path.is_file()}
+        names = {path.name.lower() for path in context.files if path.parent == context.root}
         for filename, (severity, remediation) in self.REQUIRED.items():
             if filename.lower() not in names:
                 findings.append(

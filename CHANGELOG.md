@@ -4,6 +4,12 @@ All notable changes follow Keep a Changelog, and releases follow Semantic Versio
 
 ## [Unreleased]
 
+- Prune excluded directories before traversal, skip symlinks and special files, and bound text reads to 1,000,000 bytes.
+- Reject malformed configuration and missing explicit config files with actionable errors.
+- Handle quoted action references, comment lines, and pinned Docker digests more accurately.
+- Encode SARIF paths as portable URIs and sort findings by severity.
+- Add `python -m forgeguard`, 17 regression checks, package builds, and Windows/macOS CI checks.
+
 ## [0.2.0] - 2026-09-15
 
 ### Added

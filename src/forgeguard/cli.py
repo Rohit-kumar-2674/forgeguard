@@ -57,10 +57,10 @@ def main(argv: list[str] | None = None) -> int:
     try:
         root = Path(args.path).expanduser().resolve()
         config_path = args.config if args.config else root / "forgeguard.yml"
-        config = load_config(config_path)
+        config = load_config(config_path, required=args.config is not None)
         config = Config(config.enabled, config.ignore | frozenset(args.ignore), args.fail_on or config.fail_on)
         report = scan_repository(root, config)
-    except (ValueError, ConfigError) as error:
+    except (ValueError, ConfigError, OSError) as error:
         print(f"forgeguard: error: {error}", file=sys.stderr)
         return 2
     payload = render_sarif(report) if args.format == "sarif" else report.to_dict()

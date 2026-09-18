@@ -47,6 +47,7 @@ class Finding:
 @dataclass
 class ScanContext:
     root: Path
+    files: tuple[Path, ...] = ()
 
 
 @dataclass
